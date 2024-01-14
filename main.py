@@ -69,7 +69,7 @@ def encrypt_vault():
             else:
                 clear_screen()
                 print("Invalid choice. Please enter Y or N")
-                
+
         except Exception as e:
             print(f"Error saving key: {e}")
 
@@ -100,6 +100,24 @@ def decrypt_vault():
     except Exception as e:
         print(f"Error occurred during decryption: {e}")
 
+def SearchPassword(name):
+    with open('vault.txt' , 'r') as f:
+        counter = 0
+        passwords = f.read().split(':')
+
+        for password in passwords:
+            if password.lower() == name:
+                try:
+                    return passwords[counter + 1]
+                    break
+                except:
+                    continue
+            counter += 1
+        
+    
+    return None
+
+
 def main():
     while True:
         print("\nPassword Generator")
@@ -107,8 +125,9 @@ def main():
         print("1. Generate a new password")
         print("2. View saved passwords")
         print("3. Encrypt vault")
-        print("4. Decrypt vault")  
-        print("5. Exit")
+        print("4. Decrypt vault")
+        print('5. Search password in vault')  
+        print("6. Exit")
 
         choice = input("Enter your choice: ")
 
@@ -129,6 +148,14 @@ def main():
         elif choice == "4":
             clear_screen()
             decrypt_vault()
+        elif choice == "5":
+            clear_screen()
+            userPasswordInput = input('File Name: ').lower()
+            password = SearchPassword(userPasswordInput)
+            if password:
+                print(f"Found password for '{userPasswordInput}': {password}")
+            else:
+                print(f"Password for '{userPasswordInput}' not found!")
         elif choice == "5":
             clear_screen()
             break
