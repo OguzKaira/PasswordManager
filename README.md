@@ -31,7 +31,7 @@ Feel free to fork the repository and submit pull requests for improvements!
 
 ## License
 
-[Specify the license under which you're releasing the code]
+**MIT Licance**
 
 ## Contact
 You can get contact with Email (oguzkairakun@gmail.com)
