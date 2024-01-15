@@ -6,6 +6,7 @@ Simple password manager in Python (Console application)
 - You can save your passwords into vault
 - You can encrypt and decrypt vault file for secure your passwords
 - Searching passwords in the vault
+- Launcher for extra password control
 
 ## In development
 - Password strength meter for check the password how strong
