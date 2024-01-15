@@ -190,6 +190,7 @@ def decrypt_vault():
 
         clear_screen()
         print("Vault decrypted successfully!")
+        os.remove('key.key.gpg')
     except FileNotFoundError:
         print("Key file not found.")
     except:
