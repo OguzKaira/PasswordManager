@@ -24,7 +24,7 @@ def clear_screen():
 # Generate password with letters , digits and symbols
 def generate_password():
     characters = string.ascii_lowercase + string.ascii_uppercase + string.digits + ' *.,?;:!@#$%&*-=_'
-    return "".join(random.choice(characters) for _ in range(35))
+    return "".join(random.choice(characters) for _ in range(50))
 
 def password_strength(password):
     score = 0
