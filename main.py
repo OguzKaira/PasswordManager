@@ -5,6 +5,7 @@ import platform
 
 try:
     from cryptography.fernet import Fernet
+    import pyperclip
 except:
     print('You need install some files before use this application')
     print('Do you want set up?')
@@ -13,6 +14,7 @@ except:
 
     if user.lower() == 'y':
         os.system('pip3 install cryptography')
+        os.system('pip3 install pyperclip')
     else:
         quit()
 
@@ -108,7 +110,8 @@ def SearchPassword(name):
         passwords = passwords.split(':')
         for counter, passwordIndex in enumerate(passwords):  
             if passwordIndex.lower() == name:
-                return passwords[counter + 1]
+                pyperclip.copy(passwords[counter + 1])
+                return True
 
     return None
 
@@ -159,7 +162,7 @@ def main():
                 userPasswordInput = input('File Name: ').lower()
                 password = SearchPassword(userPasswordInput)
                 if password:
-                    print(f"Found password for '{userPasswordInput}': {password}")
+                    print("Password copied to dashboard")
                 else:
                     print(f"Password for '{userPasswordInput}' not found!")
             
