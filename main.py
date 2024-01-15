@@ -63,7 +63,7 @@ def encrypt_vault():
            with open('key.key', 'wb') as f:
                f.write(key)
        except Exception as e:
-           print(f"Error saving key: {e}")
+           print("Something Wrong")
        else:
            encrypt_key('key.key')  
    else:
@@ -103,9 +103,9 @@ def decrypt_vault():
         clear_screen()
         print("Vault decrypted successfully!")
     except FileNotFoundError:
-        print("Key file not found. Please encrypt the vault first.")
+        print("Key file not found.")
     except Exception as e:
-        print(f"Error occurred during decryption: {e}")
+        print("Something Wrong")
 
 def decrypt_key(keyFile):
         os.system('gpg --output key.key -d ' + '{}'.format(keyFile + '.gpg'))
