@@ -157,6 +157,9 @@ def encrypt_key(key_file: str) -> None:
        clear_screen()
        print("Key encrypted successfully!")
 
+import os
+from cryptography.fernet import Fernet
+
 # Decrypting vault
 def decrypt_vault():
     try:
@@ -194,8 +197,8 @@ def decrypt_vault():
 
 # Decrypting key file
 def decrypt_key(keyFile):
-        if os.path.exists(keyFile):
-            os.system('gpg --output key.key -d ' + '{}'.format(keyFile + '.gpg'))
+    if os.path.exists(keyFile + '.gpg'):
+        os.system('gpg --output key.key -d ' + '{}'.format(keyFile + '.gpg'))
 
 # Search password in vault
 def SearchPassword(name):
