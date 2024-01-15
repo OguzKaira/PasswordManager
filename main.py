@@ -56,28 +56,30 @@ def encrypt_vault():
 
     with open('vault.key', 'wb') as f:
         f.write(encrypted_data)
-
-    while True:
         save_choice = input("Do you want to save the key in a file? You can get the key and save in somewhere else if you choose N, (Y/N) ")
-        try:
-            if save_choice.lower() == 'y':
-                with open('key.key', 'wb') as f:
-                    f.write(key)
-                clear_screen()
-                print("Key saved to key.key successfully!")
-                break
-            elif save_choice.lower() == 'n':
-                clear_screen()
-                print("Please save the key securely:\n", key.decode())
-                break
-            else:
-                clear_screen()
-                print("Invalid choice. Please enter Y or N")
+        while True:
+            try:
+                if save_choice.lower() == 'y':
+                    with open('key.key', 'wb') as f:
+                        f.write(key)
+                    clear_screen()
+                    print("Key saved to key.key successfully!")
+                    break
+                elif save_choice.lower() == 'n':
+                    clear_screen()
+                    print("Please save the key securely:\n", key.decode())
+                    break
+                else:
+                    clear_screen()
+                    print("Invalid choice. Please enter Y or N")
 
-        except Exception as e:
-            print(f"Error saving key: {e}")
+            except Exception as e:
+                print(f"Error saving key: {e}")
 
-    print("Vault encrypted successfully!")
+def encrypt_key(keyFile):
+    if os.path.exists(keyFile):
+        os.system('gpg -c ' + '{}'.format(keyFile))
+        os.remove(keyFile)
 
 def decrypt_vault():
     try:
@@ -90,7 +92,7 @@ def decrypt_vault():
             key = input("Input the key: ")
         fernet = Fernet(key)
 
-        with open("vault.txt", "rb") as f:
+        with open("vault.key", "rb") as f:
             encrypted_data = f.read()
 
         decrypted_data = fernet.decrypt(encrypted_data)
@@ -103,6 +105,9 @@ def decrypt_vault():
         print("Key file not found. Please encrypt the vault first.")
     except Exception as e:
         print(f"Error occurred during decryption: {e}")
+
+def decrypt_key(keyFile):
+        os.system('gpg --output key.key -d ' + '{}'.format(keyFile + '.gpg'))
 
 def SearchPassword(name):
     with open('vault.key', 'r') as f:
@@ -152,9 +157,11 @@ def main():
             case "3":
                 clear_screen()
                 encrypt_vault()
+                encrypt_key('key.key')
             
             case "4":
                 clear_screen()
+                decrypt_key('key.key')
                 decrypt_vault()
             
             case "5":
