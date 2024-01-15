@@ -13,7 +13,6 @@
 - Add your passwords into vault
   
 ## In Development
-- **Customized random password (allows to customize passwords to users)**
 - **Multiple vaults for different categories**
 
 ## Usage
