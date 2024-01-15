@@ -1,4 +1,4 @@
-# Password Generator
+# Password Manager 
 
 **A simple password generator and manager with encryption capabilities.**
 
