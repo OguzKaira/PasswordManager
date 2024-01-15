@@ -3,6 +3,7 @@ import string
 import random
 import os
 import platform
+import re 
 
 # Check essential libs, if not installed, install
 try:
@@ -21,8 +22,52 @@ def clear_screen():
 
 # Generate password with letters , digits and symbols
 def generate_password():
-    characters = string.ascii_letters + string.digits + "./*-+!@#*;,"
+    characters = string.ascii_lowercase + string.ascii_uppercase + string.digits + string.punctuation
     return "".join(random.choice(characters) for _ in range(35))
+
+def password_strength(password):
+    score = 0
+
+    # Length
+    if len(password) < 8:
+        score -= 1
+    elif len(password) > 12:
+        score += 1
+
+    # Character types
+    if any(c in string.ascii_uppercase for c in password):
+        score += 1
+    if any(c in string.ascii_lowercase for c in password):
+        score += 1
+    if any(c in string.digits for c in password):
+        score += 1
+    if any(c in string.punctuation for c in password):
+        score += 1
+
+    # Dictionary words
+    if re.search(r"\b\w{8,}\b", password):
+        score -= 1
+
+    # Consecutive characters
+    for i in range(1, len(password)):
+        if password[i] == password[i-1]:
+            score -= 1
+
+    # Common patterns
+    for pattern in ["12345", "abcde", "qwerty", "iloveyou"]:
+        if pattern in password:
+            score -= 1
+
+    strength_description = {
+        0: "Very Weak",
+        1: "Weak",
+        2: "Medium",
+        3: "Strong",
+        4: "Very Strong",
+        5: "Excellent"
+    }
+
+    return max(0, min(5, score)), strength_description[score]
 
 # Check vault (password store file) exist
 def check_vault_exists(dir_path):
@@ -39,14 +84,23 @@ def save_password(password, name, vault_exists):
     with open("vault.key", mode) as f:
         f.write(f"{name}: {password}\n")
 
-# Checking for same names. If there are same names, not allow to add this name again.
+import os
+
 def get_existing_names():
-    names = []
+    names = set()  # Use a set for efficient lookup
+
     if check_vault_exists(os.getcwd()):
         with open("vault.key", "r") as f:
             for line in f:
-                name, _ = line.strip().split(":")
-                names.append(name.lower())
+                line = line.strip()  # Remove leading/trailing whitespace
+
+                try:
+                    name, *_ = line.split(":")  # Unpack any number of values after name
+                    names.add(name.lower())  # Store in lowercase for case-insensitive comparison
+                except ValueError:
+                    # Handle invalid line format (e.g., missing colon)
+                    print(f"Invalid line format: {line}")
+
     return names
 
 # Write all passwords to console
@@ -172,7 +226,8 @@ def main():
         print("3. Encrypt vault")
         print("4. Decrypt vault")
         print("5. Search password in vault")  
-        print("6. Exit")
+        print("6. Password Strength Analysis")
+        print("7. Exit")
 
         choice = input("Enter your choice: ")
 
@@ -208,8 +263,30 @@ def main():
                     print("Password copied to dashboard")
                 else:
                     print(f"Password for '{userPasswordInput}' not found!")
-            
+                
             case "6":
+                password = input("Enter a password to check its strength: ")
+                strength, description = password_strength(password)
+
+                print(f"Password: {password}")
+                clear_screen()
+                print(f"Strength: {description} (Score: {strength})" , end = ' ')
+
+                match strength:
+                    case 0:
+                        print("💀")  # Very weak
+                    case 1:
+                        print("😢")  # Weak
+                    case 2:
+                        print("😪")  # Medium
+                    case 3:
+                        print("💪🏻")  # Strong
+                    case 4:
+                        print("🔥")  # Very strong
+                    case 5:
+                        print("🥇")  # Excellent
+            
+            case "7":
                 clear_screen()
                 break
             
