@@ -28,11 +28,11 @@ def generate_password():
     return password
 
 def check_vault_exists(dir_path):
-    return os.path.exists(os.path.join(dir_path, 'vault.txt'))
+    return os.path.exists(os.path.join(dir_path, 'vault.key'))
 
 def save_password(password, name, vault_exists):
     mode = 'w' if not vault_exists else 'a'
-    with open('vault.txt', mode) as f:
+    with open('vault.key', mode) as f:
         f.write(f"{name}: {password}\n")
 
 def show_passwords():
@@ -45,12 +45,12 @@ def encrypt_vault():
     key = Fernet.generate_key()
     fernet = Fernet(key)
 
-    with open('vault.txt', 'rb') as f:
+    with open('vault.key', 'rb') as f:
         original_data = f.read()
 
     encrypted_data = fernet.encrypt(original_data)
 
-    with open('vault.txt', 'wb') as f:
+    with open('vault.key', 'wb') as f:
         f.write(encrypted_data)
 
     while True:
@@ -91,7 +91,7 @@ def decrypt_vault():
 
         decrypted_data = fernet.decrypt(encrypted_data)
 
-        with open("vault.txt", "wb") as f:
+        with open("vault.key", "wb") as f:
             f.write(decrypted_data)
 
         print("Vault decrypted successfully!")
@@ -101,7 +101,7 @@ def decrypt_vault():
         print(f"Error occurred during decryption: {e}")
 
 def SearchPassword(name):
-    with open('vault.txt', 'r') as f:
+    with open('vault.key', 'r') as f:
         passwords = f.read().replace('\n' , ':')
         passwords = passwords.split(':')
         for counter, passwordIndex in enumerate(passwords):  
