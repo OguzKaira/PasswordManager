@@ -7,6 +7,7 @@ Simple password manager in Python (Console application)
 - You can encrypt and decrypt vault file for secure your passwords
 - Searching passwords in the vault
 - Extra password control when a user attempts to enter an app.
+- Your password encrypted with Fernet first, after key file of Fernet also encrypted by gpg
 
 ## In development
 - Password strength meter for check the password how strong
