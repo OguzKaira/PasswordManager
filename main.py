@@ -2,88 +2,84 @@ import string
 import random
 import os
 import platform
-import warnings
-
-warnings.filterwarnings('ignore')
 
 try:
     from cryptography.fernet import Fernet
     import pyperclip
-except:
-    print('You need install some files before use this application')
-    print('Do you want set up?')
-
-    user = input('Y/N: ')
-
-    if user.lower() == 'y':
-        os.system('pip3 install cryptography')
-        os.system('pip3 install pyperclip')
+except ImportError:
+    print("Missing required libraries. Do you want to install them?")
+    if input("Y/N: ").lower() == "y":
+        os.system("pip3 install cryptography pyperclip")
     else:
         quit()
 
 def clear_screen():
-    if platform.system() == 'Windows':
-        os.system('cls')
-    else:
-        os.system('clear')
+    os.system("cls" if platform.system() == "Windows" else "clear")
 
 def generate_password():
-    characters = string.ascii_letters + string.digits + './*-+!@#*;,'
-    password = ''.join(random.choice(characters) for _ in range(35))
-    return password
+    characters = string.ascii_letters + string.digits + "./*-+!@#*;,"
+    return "".join(random.choice(characters) for _ in range(35))
 
 def check_vault_exists(dir_path):
-    return os.path.exists(os.path.join(dir_path, 'vault.key'))
+    return os.path.exists(os.path.join(dir_path, "vault.key"))
 
 def save_password(password, name, vault_exists):
-    mode = 'w' if not vault_exists else 'a'
-    with open('vault.key', mode) as f:
+    mode = "w" if not vault_exists else "a"
+    with open("vault.key", mode) as f:
         f.write(f"{name}: {password}\n")
 
 def show_passwords():
     if check_vault_exists(os.getcwd()):
-        with open('vault.key' , 'r') as f:
-            for i in f.readlines():
-                print(i)
+        with open("vault.key", "r") as f:
+            for line in f:
+                print(line, end="")
     else:
-        print('There are no saved passwords.')
+        print("No saved passwords.")
 
 def encrypt_vault():
-    key = Fernet.generate_key()
-    fernet = Fernet(key)
+   key = Fernet.generate_key()
+   fernet = Fernet(key)
 
-    with open('vault.key', 'rb') as f:
-        original_data = f.read()
+   with open('vault.key', 'rb') as f:
+       original_data = f.read()
 
-    encrypted_data = fernet.encrypt(original_data)
+   encrypted_data = fernet.encrypt(original_data)
 
-    with open('vault.key', 'wb') as f:
-        f.write(encrypted_data)
-        save_choice = input("Do you want to save the key in a file (File will be encrypted with GPG)? You can get the key and save in somewhere else if you choose N, (Y/N) ")
-        while True:
-            try:
-                if save_choice.lower() == 'y':
-                    with open('key.key', 'wb') as f:
-                        f.write(key)
-                    clear_screen()
-                    break
-                elif save_choice.lower() == 'n':
-                    clear_screen()
-                    print("Please save the key securely:\n", key.decode())
-                    break
-                else:
-                    clear_screen()
-                    print("Invalid choice. Please enter Y or N")
+   with open('vault.key', 'wb') as f:
+       f.write(encrypted_data)
 
-            except Exception as e:
-                print(f"Error saving key: {e}")
+   while True:
+       save_choice = input(
+           "Do you want to save the key in a file (encrypted with GPG)? (Y/N) "
+       ).lower()
 
-def encrypt_key(keyFile):
-    if os.path.exists(keyFile):
-        os.system('gpg -c ' + '{}'.format(keyFile))
-        os.remove(keyFile)
-        clear_screen()
-        print('Encrypted Done!')
+       if save_choice in ('y', 'n'):
+           break
+
+       print("Invalid choice. Please enter Y or N")
+
+   if save_choice == 'y':
+       try:
+           with open('key.key', 'wb') as f:
+               f.write(key)
+       except Exception as e:
+           print(f"Error saving key: {e}")
+       else:
+           encrypt_key('key.key')  
+   else:
+       print("Please save the key securely:\n", key.decode())
+
+   clear_screen()
+
+def encrypt_key(key_file: str) -> None:
+   if os.path.exists(key_file):
+       os.system(f"gpg -c {key_file}")
+       os.remove(key_file)
+       clear_screen()
+       print("Key encrypted successfully!")
+   else:
+       print(f"Key file not found: {key_file}")
+
 
 def decrypt_vault():
     try:
