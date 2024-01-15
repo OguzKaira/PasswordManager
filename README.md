@@ -9,10 +9,9 @@
 - Encrypts the vault with Fernet and GPG for added security
 - Allows viewing, searching, and copying saved passwords
 - Requires admin access to run for more security
-
+- You can check strength of the password easily
+  
 ## In Development
-
-- **Password strength meter**
 - **Multiple vaults for different categories**
 - **Ability to add existing passwords to vault**
 
