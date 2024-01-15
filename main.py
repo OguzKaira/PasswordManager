@@ -4,6 +4,7 @@ import random
 import os
 import platform
 import re 
+import getpass
 
 # Check essential libs, if not installed, install
 try:
@@ -22,7 +23,7 @@ def clear_screen():
 
 # Generate password with letters , digits and symbols
 def generate_password():
-    characters = string.ascii_lowercase + string.ascii_uppercase + string.digits + string.punctuation
+    characters = string.ascii_lowercase + string.ascii_uppercase + string.digits + ' *.,?;:!@#$%&*-=_'
     return "".join(random.choice(characters) for _ in range(35))
 
 def password_strength(password):
@@ -202,7 +203,7 @@ def decrypt_key(keyFile):
         os.system('gpg --output key.key -d ' + '{}'.format(keyFile + '.gpg'))
 
 # Search password in vault
-def SearchPassword(name):
+def search_password(name):
     with open('vault.key', 'r') as f:
         passwords = f.read().replace('\n' , ':')
         passwords = passwords.split(':')
@@ -212,6 +213,14 @@ def SearchPassword(name):
                 return True
 
     return None
+
+def add_password_to_vault(name , password):
+    if 'key.key.gpg' in os.listdir():
+        decrypt_key('key.key')
+        decrypt_vault()
+
+    with open("vault.key" , "a") as f:
+        f.write(name + ": " + password + "\n")
 
 # Just admin users can start the password manager
 def has_admin_access():
@@ -231,7 +240,8 @@ def main():
         print("4. Decrypt vault")
         print("5. Search password in vault")  
         print("6. Password Strength Analysis")
-        print("7. Exit")
+        print("7. Add Password to Vault")
+        print("8. Exit")
 
         choice = input("Enter your choice: ")
 
@@ -261,8 +271,8 @@ def main():
             
             case "5":
                 clear_screen()
-                userPasswordInput = input('File Name: ').lower()
-                password = SearchPassword(userPasswordInput)
+                userPasswordInput = input('Password Name: ').lower()
+                password = search_password(userPasswordInput)
                 if password:
                     print("Password copied to dashboard")
                 else:
@@ -289,8 +299,16 @@ def main():
                         print("🔥")  # Very strong
                     case 5:
                         print("🥇")  # Excellent
-            
+
             case "7":
+                passwordName = input("Give a name for password (Ex: Gmail): ")
+                password = getpass.getpass("Enter Password: ")
+
+                add_password_to_vault(passwordName , password)
+                clear_screen()
+                print("Your password saved into Vault")
+            
+            case "8":
                 clear_screen()
                 break
             
