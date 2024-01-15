@@ -37,7 +37,9 @@ def save_password(password, name, vault_exists):
 
 def show_passwords():
     if check_vault_exists(os.getcwd()):
-        os.system('open vault.key')
+        with open('vault.key' , 'r') as f:
+            for i in f.readlines():
+                print(i)
     else:
         print('There are no saved passwords.')
 
