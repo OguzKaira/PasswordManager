@@ -10,14 +10,14 @@
 - Allows viewing, searching, and copying saved passwords
 - Requires admin access to run for more security
 
-## Usage
-Install this repo, after, start the main.py, if libraries not available program will ask you to install to system (Python 3.10+ supported)
-
 ## In Development
 
 - **Password strength meter**
 - **Multiple vaults for different categories**
 - **Ability to add existing passwords to vault**
+
+## Usage
+Install this repo, after, start the main.py, if libraries not available program will ask you to install to system (Python 3.10+ supported)
 
 ## Additional Notes
 
