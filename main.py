@@ -2,6 +2,9 @@ import string
 import random
 import os
 import platform
+import warnings
+
+warnings.filterwarnings('ignore')
 
 try:
     from cryptography.fernet import Fernet
@@ -56,14 +59,13 @@ def encrypt_vault():
 
     with open('vault.key', 'wb') as f:
         f.write(encrypted_data)
-        save_choice = input("Do you want to save the key in a file? You can get the key and save in somewhere else if you choose N, (Y/N) ")
+        save_choice = input("Do you want to save the key in a file (File will be encrypted with GPG)? You can get the key and save in somewhere else if you choose N, (Y/N) ")
         while True:
             try:
                 if save_choice.lower() == 'y':
                     with open('key.key', 'wb') as f:
                         f.write(key)
                     clear_screen()
-                    print("Key saved to key.key successfully!")
                     break
                 elif save_choice.lower() == 'n':
                     clear_screen()
@@ -80,16 +82,18 @@ def encrypt_key(keyFile):
     if os.path.exists(keyFile):
         os.system('gpg -c ' + '{}'.format(keyFile))
         os.remove(keyFile)
+        clear_screen()
+        print('Encrypted Done!')
 
 def decrypt_vault():
     try:
         if os.path.exists("key.key"): 
             with open("key.key", "rb") as f:
                 key = f.read()
-            print("Using key from key.key")
             os.remove("key.key")
         else:
             key = input("Input the key: ")
+        
         fernet = Fernet(key)
 
         with open("vault.key", "rb") as f:
@@ -100,6 +104,7 @@ def decrypt_vault():
         with open("vault.key", "wb") as f:
             f.write(decrypted_data)
 
+        clear_screen()
         print("Vault decrypted successfully!")
     except FileNotFoundError:
         print("Key file not found. Please encrypt the vault first.")
