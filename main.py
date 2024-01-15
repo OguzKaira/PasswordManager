@@ -101,20 +101,13 @@ def decrypt_vault():
         print(f"Error occurred during decryption: {e}")
 
 def SearchPassword(name):
-    with open('vault.txt' , 'r') as f:
-        counter = 0
-        passwords = f.read().split(':')
+    with open('vault.txt', 'r') as f:
+        passwords = f.read().replace('\n' , ':')
+        passwords = passwords.split(':')
+        for counter, passwordIndex in enumerate(passwords):  
+            if passwordIndex.lower() == name:
+                return passwords[counter + 1]
 
-        for password in passwords:
-            if password.lower() == name:
-                try:
-                    return passwords[counter + 1]
-                    break
-                except:
-                    continue
-            counter += 1
-        
-    
     return None
 
 
@@ -126,42 +119,49 @@ def main():
         print("2. View saved passwords")
         print("3. Encrypt vault")
         print("4. Decrypt vault")
-        print('5. Search password in vault')  
+        print("5. Search password in vault")  
         print("6. Exit")
 
         choice = input("Enter your choice: ")
 
-        if choice == "1":
-            clear_screen()
-            password = generate_password()
-            name = input("Give a name for the password: ")
-            vault_exists = check_vault_exists(os.getcwd())
-            save_password(password, name, vault_exists)
-            clear_screen()
-            print("Password saved successfully!")
-        elif choice == "2":
-            clear_screen()
-            show_passwords()
-        elif choice == "3":
-            clear_screen()
-            encrypt_vault()
-        elif choice == "4":
-            clear_screen()
-            decrypt_vault()
-        elif choice == "5":
-            clear_screen()
-            userPasswordInput = input('File Name: ').lower()
-            password = SearchPassword(userPasswordInput)
-            if password:
-                print(f"Found password for '{userPasswordInput}': {password}")
-            else:
-                print(f"Password for '{userPasswordInput}' not found!")
-        elif choice == "5":
-            clear_screen()
-            break
-        else:
-            clear_screen()
-            print("Invalid choice. Please try again.")
+        match choice:
+            case "1":
+                clear_screen()
+                password = generate_password()
+                name = input("Give a name for the password: ")
+                vault_exists = check_vault_exists(os.getcwd())
+                save_password(password, name, vault_exists)
+                clear_screen()
+                print("Password saved successfully!")
+            
+            case "2":
+                clear_screen()
+                show_passwords()
+            
+            case "3":
+                clear_screen()
+                encrypt_vault()
+            
+            case "4":
+                clear_screen()
+                decrypt_vault()
+            
+            case "5":
+                clear_screen()
+                userPasswordInput = input('File Name: ').lower()
+                password = SearchPassword(userPasswordInput)
+                if password:
+                    print(f"Found password for '{userPasswordInput}': {password}")
+                else:
+                    print(f"Password for '{userPasswordInput}' not found!")
+            
+            case "6":
+                clear_screen()
+                break
+            
+            case _:
+                clear_screen()
+                print("Invalid choice. Please try again.")
 
 if __name__ == '__main__':
     main()
