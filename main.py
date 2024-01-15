@@ -110,6 +110,12 @@ def SearchPassword(name):
 
     return None
 
+def has_admin_access():
+    if platform.system() == "Windows":
+        return ctypes.windll.shell32.IsUserAnAdmin()  
+    else:
+        return os.geteuid() == 0  
+
 
 def main():
     while True:
@@ -164,4 +170,7 @@ def main():
                 print("Invalid choice. Please try again.")
 
 if __name__ == '__main__':
-    main()
+    if has_admin_access():
+        main()
+    else:
+        print("You don't have admin access.\nPlease start the file with sudo/RunAs")
