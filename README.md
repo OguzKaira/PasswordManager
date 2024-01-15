@@ -1,7 +1,8 @@
 # Password Generator
 
 **A simple password generator and manager with encryption capabilities.**
-**Note: This manager is made for practicing, not recommended to use**
+
+**Note: This manager is made for practicing, not recommended to use for store sensitive data**
 
 ## Features
 
