@@ -13,6 +13,7 @@
 - Add your passwords into vault
   
 ## In Development
+- **UI**
 - **Multiple vaults for different categories**
 
 ## Usage
