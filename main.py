@@ -24,9 +24,23 @@ def check_vault_exists(dir_path):
     return os.path.exists(os.path.join(dir_path, "vault.key"))
 
 def save_password(password, name, vault_exists):
+    names = get_existing_names()
+    while name.lower() in names:
+        print("This name already used, please give another name:")
+        name = input()
+
     mode = "w" if not vault_exists else "a"
     with open("vault.key", mode) as f:
         f.write(f"{name}: {password}\n")
+
+def get_existing_names():
+    names = []
+    if check_vault_exists(os.getcwd()):
+        with open("vault.key", "r") as f:
+            for line in f:
+                name, _ = line.strip().split(":")
+                names.append(name.lower())
+    return names
 
 def show_passwords():
     if check_vault_exists(os.getcwd()):
