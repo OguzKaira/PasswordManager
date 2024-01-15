@@ -1,8 +1,10 @@
+# Main Libs
 import string
 import random
 import os
 import platform
 
+# Check essential libs, if not installed, install
 try:
     from cryptography.fernet import Fernet
     import pyperclip
@@ -13,16 +15,20 @@ except ImportError:
     else:
         quit()
 
+# Function for clearing console
 def clear_screen():
     os.system("cls" if platform.system() == "Windows" else "clear")
 
+# Generate password with letters , digits and symbols
 def generate_password():
     characters = string.ascii_letters + string.digits + "./*-+!@#*;,"
     return "".join(random.choice(characters) for _ in range(35))
 
+# Check vault (password store file) exist
 def check_vault_exists(dir_path):
     return os.path.exists(os.path.join(dir_path, "vault.key"))
 
+# Save password to vault
 def save_password(password, name, vault_exists):
     names = get_existing_names()
     while name.lower() in names:
@@ -33,6 +39,7 @@ def save_password(password, name, vault_exists):
     with open("vault.key", mode) as f:
         f.write(f"{name}: {password}\n")
 
+# Checking for same names. If there are same names, not allow to add this name again.
 def get_existing_names():
     names = []
     if check_vault_exists(os.getcwd()):
@@ -42,6 +49,7 @@ def get_existing_names():
                 names.append(name.lower())
     return names
 
+# Write all passwords to console
 def show_passwords():
     if check_vault_exists(os.getcwd()):
         with open("vault.key", "r") as f:
@@ -50,6 +58,7 @@ def show_passwords():
     else:
         print("No saved passwords.")
 
+# Encrypting vault
 def encrypt_vault():
    key = Fernet.generate_key()
    fernet = Fernet(key)
@@ -86,7 +95,7 @@ def encrypt_vault():
        print("Key: " + key.decode())
        pyperclip.copy(key.decode())
        
-
+# Encrypring key file
 def encrypt_key(key_file: str) -> None:
    if os.path.exists(key_file):
        os.system(f"gpg -c {key_file}")
@@ -94,7 +103,7 @@ def encrypt_key(key_file: str) -> None:
        clear_screen()
        print("Key encrypted successfully!")
 
-
+# Decrypting vault
 def decrypt_vault():
     try:
         if os.path.exists("key.key"): 
@@ -129,10 +138,12 @@ def decrypt_vault():
     except:
         print("Something Wrong")
 
+# Decrypting key file
 def decrypt_key(keyFile):
         if os.path.exists(keyFile):
             os.system('gpg --output key.key -d ' + '{}'.format(keyFile + '.gpg'))
 
+# Search password in vault
 def SearchPassword(name):
     with open('vault.key', 'r') as f:
         passwords = f.read().replace('\n' , ':')
@@ -144,13 +155,14 @@ def SearchPassword(name):
 
     return None
 
+# Just admin users can start the password manager
 def has_admin_access():
     if platform.system() == "Windows":
         return ctypes.windll.shell32.IsUserAnAdmin()  
     else:
         return os.geteuid() == 0  
 
-
+# Main Menu
 def main():
     while True:
         print("\nPassword Generator")
@@ -205,6 +217,7 @@ def main():
                 clear_screen()
                 print("Invalid choice. Please try again.")
 
+# Start password manager
 if __name__ == '__main__':
     if has_admin_access():
         main()
