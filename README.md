@@ -1,15 +1,37 @@
-# PasswordManager
-Simple password manager in Python (Console application)
+# Password Generator
 
-## Features 
-- You can create strong random passwords
-- You can save your passwords into vault
-- You can encrypt and decrypt vault file for secure your passwords
-- Searching passwords in the vault
-- Extra password control when a user attempts to enter an app.
-- Your password is first encrypted with Fernet, and then the Fernet key file is also encrypted using GPG.
+**A simple password generator and manager with encryption capabilities.**
 
-## In development
-- Password strength meter for check the password how strong
-- Multiple vaults for different categories
-- A property to add existing passwords manually.
+## Features
+
+- Generates strong, random passwords
+- Saves passwords in an encrypted vault
+- Encrypts the vault with Fernet and GPG for added security
+- Allows viewing, searching, and copying saved passwords
+- Requires admin access to run for more security
+
+## Usage
+Install this repo, after, start the main.py, if libraries not available program will ask you to install to system (Python 3.10+ supported)
+
+## In Development
+
+- **Password strength meter**
+- **Multiple vaults for different categories**
+- **Ability to add existing passwords to vault**
+
+## Additional Notes
+
+- The script automatically checks for and installs required libraries.
+- Encryption keys are essential for accessing the vault. Store them securely.
+- Admin access is required for security and file operations.
+
+## Contributing
+
+Feel free to fork the repository and submit pull requests for improvements!
+
+## License
+
+[Specify the license under which you're releasing the code]
+
+## Contact
+You can get contact with Email (oguzkairakun@gmail.com)
