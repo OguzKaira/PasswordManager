@@ -62,14 +62,16 @@ def encrypt_vault():
        try:
            with open('key.key', 'wb') as f:
                f.write(key)
-       except Exception as e:
+       except:
            print("Something Wrong")
        else:
-           encrypt_key('key.key')  
+           encrypt_key('key.key')
    else:
-       print("Please save the key securely:\n", key.decode())
-
-   clear_screen()
+       clear_screen()
+       print("Please save the key securely (Key will copy to dashboard)")
+       print("Key: " + key.decode())
+       pyperclip.copy(key.decode())
+       
 
 def encrypt_key(key_file: str) -> None:
    if os.path.exists(key_file):
@@ -77,8 +79,6 @@ def encrypt_key(key_file: str) -> None:
        os.remove(key_file)
        clear_screen()
        print("Key encrypted successfully!")
-   else:
-       print(f"Key file not found: {key_file}")
 
 
 def decrypt_vault():
@@ -87,28 +87,37 @@ def decrypt_vault():
             with open("key.key", "rb") as f:
                 key = f.read()
             os.remove("key.key")
+            fernet = Fernet(key)
+
+            with open("vault.key", "rb") as f:
+                encrypted_data = f.read()
+
+            decrypted_data = fernet.decrypt(encrypted_data)
+
+            with open("vault.key", "wb") as f:
+                f.write(decrypted_data)
         else:
             key = input("Input the key: ")
-        
-        fernet = Fernet(key)
+            fernet = Fernet(key)
 
-        with open("vault.key", "rb") as f:
-            encrypted_data = f.read()
+            with open("vault.key", "rb") as f:
+                encrypted_data = f.read()
 
-        decrypted_data = fernet.decrypt(encrypted_data)
-
-        with open("vault.key", "wb") as f:
-            f.write(decrypted_data)
+            decrypted_data = fernet.decrypt(encrypted_data)
+            
+            with open("vault.key", "wb") as f:
+                f.write(decrypted_data)
 
         clear_screen()
         print("Vault decrypted successfully!")
     except FileNotFoundError:
         print("Key file not found.")
-    except Exception as e:
+    except:
         print("Something Wrong")
 
 def decrypt_key(keyFile):
-        os.system('gpg --output key.key -d ' + '{}'.format(keyFile + '.gpg'))
+        if os.path.exists(keyFile):
+            os.system('gpg --output key.key -d ' + '{}'.format(keyFile + '.gpg'))
 
 def SearchPassword(name):
     with open('vault.key', 'r') as f:
