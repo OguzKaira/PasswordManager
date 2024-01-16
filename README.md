@@ -21,7 +21,7 @@
 - Virtualenv
 - Clear clipboard
 - Using admin access to reveal key instead of start the manager
-- Show passwords (use file to display instead of printing)
+- Hide password input during strength check
 
 ## Usage
 **To install and run the program:**
