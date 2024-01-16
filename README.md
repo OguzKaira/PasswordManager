@@ -10,7 +10,6 @@
 - Saves passwords in an encrypted vault
 - Encrypts the vault with Fernet and GPG for added security
 - Allows viewing, searching, and copying saved passwords
-- Requires admin access to run for more security
 - Built-in password strength meter
 - Add your passwords into vault
   
