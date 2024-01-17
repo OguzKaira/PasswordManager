@@ -119,8 +119,12 @@ def encrypt_vault():
    key = Fernet.generate_key()
    fernet = Fernet(key)
 
-   with open('vault.key', 'rb') as f:
-       original_data = f.read()
+   try:
+       with open('vault.key', 'rb') as f:
+         original_data = f.read()
+   except:
+       print('No Key File')
+       main()
 
    encrypted_data = fernet.encrypt(original_data)
 
@@ -157,9 +161,9 @@ def encrypt_key(key_file: str) -> None:
        os.system(f"gpg -c {key_file}")
        os.remove(key_file)
        if platform.system == 'Windows':
-            subprocess.run(["icacls", "{}.gpg".format(key_file), "/grant", "Administrators:F"], check=True)
+            subprocess.run(["icacls", "{}.gpg".format(key_file), "/grant", "Administrators:F" , "/deny" , "Everyone:(OI)(CI)RX"], check=True)
        else:
-            subprocess.run(["chmod", "600", "{}.gpg".format(key_file)], check=True) 
+            subprocess.run(["chmod", "400", "{}.gpg".format(key_file)], check=True) 
        clear_screen()
        print("Key encrypted successfully!")
 
