@@ -6,7 +6,7 @@ import re
 import getpass
 import secrets
 import subprocess
-from cryptography import Fernet
+from cryptography.fernet import Fernet
 import pyperclip
 
 
