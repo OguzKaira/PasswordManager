@@ -5,6 +5,7 @@ import platform
 import re 
 import getpass
 import secrets
+import subprocess
 
 # Check essential libs, if not installed, install
 try:
@@ -150,16 +151,17 @@ def encrypt_vault():
        print("Key: " + key.decode())
        pyperclip.copy(key.decode())
        
-# Encrypring key file
+# Encrypting key file
 def encrypt_key(key_file: str) -> None:
    if os.path.exists(key_file):
        os.system(f"gpg -c {key_file}")
        os.remove(key_file)
+       if platform.system == 'Windows':
+            subprocess.run(["icacls", "{}.gpg".format(key_file), "/grant", "Administrators:F"], check=True)
+       else:
+            subprocess.run(["chmod", "600", "{}.gpg".format(key_file)], check=True) 
        clear_screen()
        print("Key encrypted successfully!")
-
-import os
-from cryptography.fernet import Fernet
 
 # Decrypting vault
 def decrypt_vault():
@@ -221,13 +223,6 @@ def add_password_to_vault(name , password):
 
     with open("vault.key" , "a") as f:
         f.write(name + ": " + password + "\n")
-
-# Just admin users can start the password manager
-def has_admin_access():
-    if platform.system() == "Windows":
-        return ctypes.windll.shell32.IsUserAnAdmin()  
-    else:
-        return os.geteuid() == 0  
 
 # Main Menu
 def main():
@@ -318,7 +313,4 @@ def main():
 
 # Start password manager
 if __name__ == '__main__':
-    if has_admin_access():
-        main()
-    else:
-        print("You don't have admin access.\nPlease start the file with sudo/RunAs")
+    main()
