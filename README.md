@@ -25,19 +25,24 @@
 
 1. **Install the repository:**
    - Download or clone the repository to your desired location.
+  
+2. **Install requirements**
+   - Python 3.10+ version
+   - Cryptography package
+   - Pyperclip package
+     
+   For install all required packages:
+     ```
+     pip install -r requirements.txt
+     ```
 
-2. **Start the main.py file:**
+3. **Start the main.py file:**
    - Open a terminal or command prompt in the repository's directory.
    - Execute the following command:
 
      ```bash
      python3 main.py
      ```
-
-3. **Install missing libraries (if prompted):**
-   - The program will automatically check for required libraries.
-   - If any are missing, it will prompt you to install them using `pip3`.
-   - Follow the on-screen instructions to complete the installation.
 
 **Important notes:**
 
