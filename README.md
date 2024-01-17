@@ -17,7 +17,6 @@
 - **Multiple vaults for different categories**
 
 ## Problems
-- Virtualenv
 - Clear clipboard
 
 ## Usage
