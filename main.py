@@ -6,17 +6,9 @@ import re
 import getpass
 import secrets
 import subprocess
+from cryptography import Fernet
+import pyperclip
 
-# Check essential libs, if not installed, install
-try:
-    from cryptography.fernet import Fernet
-    import pyperclip
-except ImportError:
-    print("Missing required libraries. Do you want to install them?")
-    if input("Y/N: ").lower() == "y":
-        os.system("pip3 install cryptography pyperclip")
-    else:
-        quit()
 
 # Function for clearing console
 def clear_screen():
