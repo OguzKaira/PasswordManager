@@ -279,7 +279,7 @@ def main():
                     print(f"Password for '{userPasswordInput}' not found!")
                 
             case "6":
-                password = input("Enter a password to check it's strength: ")
+                password = getpass.getpass("Enter a password to check it's strength: ")
                 strength, description = password_strength(password)
 
                 print(f"Password: {password}")
