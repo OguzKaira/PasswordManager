@@ -16,9 +16,6 @@
 ## In Development
 - **Multiple vaults for different categories**
 
-## Problems
-- Clear clipboard
-
 ## Usage
 **To install and run the program:**
 
