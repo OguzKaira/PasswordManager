@@ -19,7 +19,6 @@
 ## Problems
 - Virtualenv
 - Clear clipboard
-- Using admin access to reveal key instead of start the manager
 
 ## Usage
 **To install and run the program:**
