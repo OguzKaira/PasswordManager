@@ -17,7 +17,6 @@
 - **Multiple vaults for different categories**
 
 ## Problems
-- CSPRNG
 - Virtualenv
 - Clear clipboard
 - Using admin access to reveal key instead of start the manager
